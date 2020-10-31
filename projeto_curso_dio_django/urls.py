@@ -16,8 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from core import views
+from calculadora import views as coreviews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello/<nome>/<int:idade>', views.hello)
+    path('hello/<nome>/<int:idade>', views.hello),
+    path('calculadora/soma/<int:a>/<int:b>', coreviews.soma),
+    path('calculadora/subtracao/<int:a>/<int:b>', coreviews.subtracao),
+    path('calculadora/divisao/<int:a>/<int:b>', coreviews.divisao),
+    path('calculadora/multiplicacao/<int:a>/<int:b>', coreviews.multiplicacao)
 ]
