@@ -18,8 +18,11 @@
                 <label>Data do Evento:</label>
             </td>
             <td>
-                <input type="date" name="data_evento" value="{{ evento.get_data_input_evento }}">
-                <input type="time" name="hora_evento" value="{{ evento.get_hora_input_evento }}">
+                <input type="datetime-local" name="data_evento" value="{{ evento.get_data_input_evento }}">
+
+            </td>
+            <td>
+                dd/mm/yyyy hh:mm
             </td>
         </tr>
         <tr>

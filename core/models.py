@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-# Create your models here.
+from datetime import datetime, timedelta
 
 class Evento(models.Model):
     titulo = models.CharField(max_length=100)
@@ -21,7 +21,15 @@ class Evento(models.Model):
         return self.data_evento.strftime('%d/%m/%Y %H:%M')
 
     def get_data_input_evento(self):
-        return self.data_evento.strftime('%Y-%m-%d')
-
+        # data = self.data_evento.strftime('%d-%m-%YT %H:%M')
+        data = data = self.data_evento.isoformat()
+        return data
     def get_hora_input_evento(self):
-        return self.data_evento.strftime('%H:%M')
+        data = self.data_evento.strftime('%H:%M')
+
+    def e_evento_atrasado(self):
+        if self.data_evento < datetime.now():
+            return True
+        else:
+            return False
+

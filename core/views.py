@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from core.models import Evento
+from datetime import datetime, timedelta
+from django.http.response import Http404, JsonResponse
 
 
 @login_required(login_url='/login/')
@@ -12,6 +14,11 @@ def lista_eventos(request):
     dados = {'eventos': evento}
     return render(request, 'agenda.html', dados)
 
+@login_required(login_url='/login/')
+def json_lista_eventos(request):
+    usuario = request.user
+    evento = Evento.objects.filter(usuario=usuario).values('id','titulo')
+    return JsonResponse(list(evento), safe=False)
 
 @login_required(login_url='/login/')
 def evento(request):
@@ -27,7 +34,8 @@ def submit_evento(request):
     if request.POST:
         titulo = request.POST.get('titulo')
         descricao = request.POST.get('descricao')
-        data_evento = request.POST.get('data_evento')+" "+request.POST.get('hora_evento')
+        # Criar função para tratar a data, pois o mozila nao aparece o campo com opções fixas, mas um campo de texto
+        data_evento = request.POST.get('data_evento')
         usuario = request.user
         id_evento = request.POST.get('id_evento')
         if id_evento:
@@ -55,9 +63,11 @@ def delete_evento(request, id_evento):
         if usuario == evento.usuario:
             evento.delete()
         else:
-            messages.error(request, "permissao invalida!")
+            raise Http404()
+
     except:
-        messages.error(request, "Nao foi possivel excluir o evento")
+        raise Http404()
+
     return redirect('/')
 
 
@@ -86,3 +96,5 @@ def logout_user(request):
 
 def index(request):
     return redirect('/agenda/')
+
+

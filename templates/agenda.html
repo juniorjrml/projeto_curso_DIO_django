@@ -7,7 +7,9 @@
 </a>
 <table>
         {% for evento in eventos %}
-        <tr>
+        <tr {% if evento.e_evento_atrasado %}
+                bgcolor="#ffa07a" title="Atrasado"
+            {% endif %}>
             <td>
                 <b>Evento:</b> {{ evento.titulo }}
             </td>
